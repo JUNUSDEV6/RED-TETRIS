@@ -1,0 +1,24 @@
+{
+  "name": "red-tetris",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JUNUSDEV6/RED-TETRIS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JUNUSDEV6/RED-TETRIS/issues"
+  },
+  "homepage": "https://github.com/JUNUSDEV6/RED-TETRIS#readme"
+}
