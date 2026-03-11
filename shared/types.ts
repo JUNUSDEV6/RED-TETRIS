@@ -4,7 +4,7 @@ export interface Player {
 	id: string;
 	name: string;
 	board: number[][];	//grille 20x10 (0 = vide, 1=bloc)
-	spectum: number[];	// Hauteur de chaque colonne [0..10]
+	spectrum: number[];	// Hauteur de chaque colonne [0..10]
 }
 
 export	interface Tetromino {

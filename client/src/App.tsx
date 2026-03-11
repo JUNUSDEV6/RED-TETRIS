@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import io from 'socket.io-client';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface Player {
+  id: string;
+  name: string;
 }
 
-export default App
+function App() {
+  const [players, setPlayers] = useState<Player[]>([]);
+
+  useEffect(() => {
+    const socket = io('http://localhost:3001');
+    
+    socket.on('connect', () => {
+      console.log('✅ CONNECTED !');
+    });
+    
+    // ÉCOUTER les mises à jour du serveur
+    socket.on('playersUpdate', (data: { players: Player[], count: number }) => {
+      console.log('📊 Players:', data.players);
+      setPlayers(data.players);
+    });
+
+    return () => socket.close();
+  }, []);
+
+  return (
+    <div style={{ 
+      padding: '2rem', fontFamily: 'monospace', 
+      textAlign: 'center', background: '#1a1a1a', 
+      color: '#00ff88', minHeight: '100vh'
+    }}>
+      <h1 style={{ fontSize: '3rem' }}>🧨 Red Tetris</h1>
+      
+      <div style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>
+        👥 <strong>{players.length}</strong> joueur(s)
+      </div>
+      
+      <div style={{ 
+        maxWidth: '400px', margin: '0 auto',
+        background: '#2a2a2a', padding: '1rem', 
+        borderRadius: '8px', textAlign: 'left'
+      }}>
+        {players.map(player => (
+          <div key={player.id} style={{ 
+            padding: '0.5rem', 
+            borderBottom: '1px solid #444',
+            fontSize: '1.1rem'
+          }}>
+            👤 {player.name}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default App;
